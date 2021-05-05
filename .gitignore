@@ -1,0 +1,6 @@
+.git
+.idea
+
+libCSVReader.a
+
+cmake-build-*
