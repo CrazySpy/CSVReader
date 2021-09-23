@@ -7,12 +7,15 @@ CSVReader::CSVReader(std::string filename,
     if(!_csvFile.is_open()) throw "Failed to open the csv file.";
 
     try {
+        _nextLine = _parseNext();
+        _columnNum = _nextLine.size();
         if(header) {
             /*
              * If the csv file has a header, just parse it and store the parsed
              * header into the '_header' vector.
              */
-            _header = _parseNext();
+            _header = _nextLine;
+            _nextLine = _parseNext();
         }
     } catch(...) {
         throw "Failed to parse header line.";
@@ -20,11 +23,13 @@ CSVReader::CSVReader(std::string filename,
 }
 
 bool CSVReader::hasNext() {
-    return _csvFile.good();
+    return _csvFile.good() && _nextLine.size() == _columnNum;
 }
 
 std::vector<std::string> CSVReader::getNextRecord() {
-    return _parseNext();
+    auto nextLine = _nextLine;
+    _nextLine = _parseNext();
+    return nextLine;
 }
 
 std::vector<std::string> CSVReader::_parseNext() {

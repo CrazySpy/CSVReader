@@ -27,6 +27,9 @@ private:
     std::ifstream _csvFile;
     std::vector<std::string> _header;
 
+    unsigned int _columnNum = 0;
+    std::vector<std::string> _nextLine;
+
     /*
      * Due to both of header and record have the same style,
      * the function can parse both of header and record.
